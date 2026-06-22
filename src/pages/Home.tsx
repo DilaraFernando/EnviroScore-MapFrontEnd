@@ -9,161 +9,134 @@ export default function Home({ onStartQuiz, onNavigateToLogin }: HomeProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen bg-[#F3F6F3] text-[#1B4332] font-sans relative overflow-x-hidden flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F9FBFA] text-[#1E293B] relative overflow-x-hidden flex flex-col justify-between select-none">
       
-      {/* 1. TOP NAVIGATION BAR */}
-      <header className="flex justify-between items-center bg-white/70 backdrop-blur-md px-8 py-3 sticky top-0 z-50 border-b border-gray-100/50 mx-4 mt-3 rounded-2xl shadow-xs">
-        {/* Logo Icon & Name */}
+      {/* 🟢 BACKGROUND GRID DOTS (පසුබිමේ ඇති ලස්සන තිත් රටාව) */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-70 pointer-events-none z-0"></div>
+
+      {/* 🟢 MODERN FLOATING NAVIGATION BAR */}
+      <header className="max-w-6xl w-full mx-auto px-6 pt-6 flex justify-between items-center relative z-50 animate-fade-in">
+        {/* Logo Section */}
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-[#1B4332] rounded-full flex items-center justify-center text-[#E2EFE0] font-serif font-bold text-sm">
-            🌿
+          <div className="w-9 h-9 bg-[#1B4332] rounded-full flex items-center justify-center text-lg shadow-sm">
+            🗺️
           </div>
-          <span className="font-bold text-sm text-[#1B4332] tracking-tight">GlowCare</span>
+          <span className="font-black text-base tracking-tight text-[#1B4332] uppercase">EnviroScore</span>
         </div>
 
-        {/* Links */}
-        <nav className="hidden md:flex items-center gap-6 text-[11px] font-semibold text-gray-600">
-          <a href="#home" className="text-[#1B4332] font-bold">Home</a>
-          <a href="#how-it-works" className="hover:text-[#1B4332] transition-colors">How It Works</a>
-          <a href="#why-us" className="hover:text-[#1B4332] transition-colors">Why Us</a>
-          <a href="#results" className="hover:text-[#1B4332] transition-colors">Our Results</a>
-          <a href="#testimonials" className="hover:text-[#1B4332] transition-colors">Testimonials</a>
+        {/* Center Floating Pills (Flatrover Minimalist Design) */}
+        <nav className="hidden md:flex items-center bg-white border border-gray-200/60 shadow-xs rounded-full p-1.5 gap-1">
+          <button className="px-5 py-2 bg-[#E2EFE0] text-[#1B4332] font-bold text-xs rounded-full transition-all flex items-center gap-1.5">
+            <span>🔍</span> Explore Map
+          </button>
+          <button className="px-5 py-2 text-gray-500 hover:text-black font-semibold text-xs rounded-full transition-all cursor-pointer">
+            🌱 Eco Impact
+          </button>
+          <button className="px-5 py-2 text-gray-500 hover:text-black font-semibold text-xs rounded-full transition-all cursor-pointer">
+            📊 Region Scores
+          </button>
         </nav>
 
-        {/* Action Buttons */}
+        {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
-          <button className="px-4 py-1.5 bg-[#FDE2E4] hover:bg-[#FCD2D6] text-[#C94A53] text-[11px] font-bold rounded-full transition-all flex items-center gap-1 shadow-2xs">
-            <span>🤍</span> Donate Now
-          </button>
-          <button className="w-7 h-7 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center text-xs text-gray-600 hover:bg-gray-100 transition-all">
-            🛒
-          </button>
           <button 
             onClick={onNavigateToLogin}
-            className="w-7 h-7 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center text-xs text-gray-600 hover:bg-gray-100 transition-all"
-            title="Login"
+            className="px-5 py-2 text-xs font-bold text-gray-600 hover:text-black transition-all cursor-pointer"
           >
-            👤
+            Login
+          </button>
+          <button 
+            onClick={onStartQuiz}
+            className="px-6 py-2.5 bg-[#1B4332] hover:bg-[#143225] text-white text-xs font-bold rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+          >
+            Join Ecosystem
           </button>
         </div>
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative pt-12 text-center max-w-3xl mx-auto px-6 space-y-4 z-10 flex-1 flex flex-col justify-center">
-        <h1 className="text-3xl md:text-5xl font-normal tracking-tight text-[#1B4332] font-serif leading-tight">
-          Find the Perfect Plant for Your Space
+      {/* 🟢 HERO MAIN CONTENT SECTION */}
+      <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-12 pb-6 relative z-10 max-w-4xl mx-auto w-full animate-fade-in">
+        
+        {/* Active Eco Trackers Count Indicator */}
+        <div className="flex flex-col items-center gap-2 mb-6">
+          <div className="flex -space-x-2.5">
+            <div className="w-7 h-7 rounded-full bg-[#E2EFE0] border-2 border-white flex items-center justify-center text-[10px] font-bold shadow-xs">🌿</div>
+            <div className="w-7 h-7 rounded-full bg-[#C7E2C5] border-2 border-white flex items-center justify-center text-[10px] font-bold shadow-xs">🍀</div>
+            <div className="w-7 h-7 rounded-full bg-[#A3D19F] border-2 border-white flex items-center justify-center text-[10px] font-bold shadow-xs">🌲</div>
+          </div>
+          <span className="text-[10px] text-gray-400 font-extrabold tracking-wider uppercase">60K+ Active Eco Trackers</span>
+        </div>
+
+        {/* Main Bold Heading (Flatrover Typography Style) */}
+        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-gray-900 leading-[1.15] max-w-3xl">
+          Travel freely, <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-700 to-green-600">stay in green zones</span>
         </h1>
-        <p className="text-xs text-gray-500 max-w-xl mx-auto leading-relaxed font-normal">
-          Answer a few simple questions and discover plants that match your light, <br />
-          space, and lifestyle — no guesswork needed.
+        
+        {/* Subtitle Text */}
+        <p className="text-xs md:text-sm text-gray-400 max-w-md mx-auto mt-5 leading-relaxed font-normal">
+          Explore environmental impact scores and track live ecosystem metrics for your sustainability journeys.
         </p>
 
-        {/* Hero Actions */}
-        <div className="flex justify-center items-center gap-3 pt-2">
+        {/* Center Search Input & Button Bar */}
+        <div className="flex items-center bg-white border border-gray-200 shadow-xs hover:shadow-md rounded-full p-2 mt-8 w-full max-w-md transition-all">
+          <div className="flex items-center px-3 w-full">
+            <span className="text-sm text-gray-400 mr-2">📍</span>
+            <input 
+              type="text" 
+              placeholder="Search region or ecosystem..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-transparent text-xs focus:outline-none text-gray-700 font-medium placeholder-gray-400"
+            />
+          </div>
           <button 
             onClick={onStartQuiz}
-            className="px-5 py-2 bg-[#1B4332] hover:bg-[#122c21] text-white text-[11px] font-medium rounded-full shadow-sm transition-all flex items-center gap-1"
+            className="px-6 py-2.5 bg-[#1B4332] hover:bg-[#143225] text-white text-xs font-bold rounded-full shadow-xs whitespace-nowrap transition-all cursor-pointer"
           >
-            Get Started <span>→</span>
-          </button>
-          <button 
-            onClick={onStartQuiz}
-            className="px-5 py-2 bg-white hover:bg-gray-50 text-[#1B4332] text-[11px] font-medium rounded-full border border-gray-200/80 shadow-2xs transition-all flex items-center gap-1"
-          >
-            Start Quiz <span>→</span>
+            Check Score
           </button>
         </div>
-      </section>
 
-      {/* 3. LANDSCAPE MOUNTAIN BACKGROUND */}
-      {/* පින්තූරයේ පෙනෙන කඳු සහ ගස් සහිත පසුබිම සිහිගන්වන SVG කලාකෘතිය */}
-      <div className="absolute bottom-0 left-0 w-full h-[55vh] pointer-events-none z-0 overflow-hidden flex items-end">
-        <svg viewBox="0 0 1440 400" className="w-full h-auto translate-y-1" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Back Soft Mountains */}
-          <path d="M0 220 C300 130 500 180 800 100 C1100 20 1200 80 1440 140 L1440 400 L0 400 Z" fill="#A7C2A4" opacity="0.4" />
-          {/* Mid Layer Mountains */}
-          <path d="M0 280 C250 190 600 240 900 170 C1200 100 1300 150 1440 190 L1440 400 L0 400 Z" fill="#7FA97A" opacity="0.6" />
-          {/* Front Mountain Hills & Trees Base */}
-          <path d="M0 320 C350 250 700 290 1050 240 C1300 200 1380 220 1440 240 L1440 400 L0 400 Z" fill="#52794D" opacity="0.8" />
-          {/* Bottom White Fog Gradient Effect */}
-          <rect y="360" width="1440" height="40" fill="#F3F6F3" />
-        </svg>
-      </div>
-
-      {/* 4. BOTTOM UI CARDS SECTION */}
-      {/* ඔයාගේ අවශ්‍යතාවය අනුව හරියටම 200px x 200px ප්‍රමාණයේ කාඩ්පත් දෙක */}
-      <section className="relative z-20 max-w-4xl mx-auto px-6 pb-12 w-full flex flex-wrap justify-center gap-6">
-        
-        {/* Card 1: Will This Plant Work? */}
-        <div 
-          className="bg-white/95 backdrop-blur-xs p-4 rounded-2xl shadow-md border border-white/50 flex flex-col justify-between transition-transform duration-300 hover:-translate-y-0.5"
-          style={{ width: '200px', height: '200px' }}
-        >
-          <div className="space-y-1">
-            <h3 className="text-xs font-semibold text-gray-900 font-serif">Will This Plant Work?</h3>
-            <p className="text-[9px] text-gray-400 leading-normal">
-              Check how well any plant fits your climate, space, and vibe before you buy.
-            </p>
-          </div>
+        {/* 🟢 CENTER MAP HERO ICON & FLOATING INFOGRAPHICS */}
+        <div className="mt-14 relative w-full max-w-md flex justify-center items-end h-72">
           
-          <div className="space-y-2">
-            <div className="relative flex items-center bg-gray-50 border border-gray-100 rounded-xl px-2 py-1.5">
-              <span className="text-[10px] text-gray-400 mr-1">🔍</span>
-              <input 
-                type="text" 
-                placeholder="Search any plant"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent text-[10px] focus:outline-none text-gray-700"
-              />
-            </div>
-            <button 
-              onClick={onStartQuiz}
-              className="w-full py-1.5 bg-[#1B4332] text-white text-[9px] font-bold rounded-xl text-center flex items-center justify-center gap-1 hover:bg-[#122c21] transition-all"
-            >
-              Check Fit Score <span>→</span>
-            </button>
+          {/* Subtle Radial Glow Behind the Map Asset */}
+          <div className="absolute w-56 h-56 bg-emerald-100/40 rounded-full blur-3xl -z-10 bottom-6"></div>
+          
+          {/* Central Interactive Style Map Asset */}
+          <div className="text-[150px] drop-shadow-2xl select-none transform hover:scale-105 transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing pb-4">
+            🗺️
           </div>
+
+          {/* Floating Card Left: 100% Verified */}
+          <div className="absolute left-2 bottom-16 bg-white/95 backdrop-blur-xs border border-gray-100 p-3 rounded-2xl shadow-md flex items-center gap-2.5 text-left transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+            <div className="w-7 h-7 bg-emerald-50 rounded-xl flex items-center justify-center text-xs shadow-2xs">
+              🛡️
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-black leading-none mb-0.5">100% Verified</p>
+              <p className="text-[8px] text-gray-400 font-medium">Environmental Data</p>
+            </div>
+          </div>
+
+          {/* Floating Card Right: Live Impact */}
+          <div className="absolute right-2 bottom-24 bg-white/95 backdrop-blur-xs border border-gray-100 p-3 rounded-2xl shadow-md flex flex-col gap-1 text-left transform rotate-3 hover:rotate-0 transition-transform duration-300">
+            <span className="text-[8px] font-extrabold text-gray-400 uppercase tracking-wider">Live Updates</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-emerald-600">●</span>
+              <p className="text-[11px] font-black text-black leading-none">Eco Impact Live</p>
+            </div>
+          </div>
+
         </div>
 
-        {/* Card 2: Not sure what to grow? */}
-        <div 
-          className="bg-white/95 backdrop-blur-xs p-4 rounded-2xl shadow-md border border-white/50 flex flex-col justify-between relative overflow-hidden transition-transform duration-300 hover:-translate-y-0.5"
-          style={{ width: '200px', height: '200px' }}
-        >
-          <div className="space-y-1">
-            <h3 className="text-xs font-semibold text-gray-900 font-serif">Not sure what to grow?</h3>
-            <p className="text-[9px] text-gray-400 leading-normal">
-              Let's find your perfect plant match!
-            </p>
-          </div>
+      </main>
 
-          <div>
-            <button 
-              onClick={onStartQuiz}
-              className="px-3 py-1.5 bg-[#7BC676] hover:bg-[#69b364] text-white text-[9px] font-bold rounded-full flex items-center gap-1 shadow-2xs transition-all"
-            >
-              Start Quiz <span>→</span>
-            </button>
-          </div>
-
-          {/* Plant Vector Graphic Element at bottom-right corner as shown in screen */}
-          <div className="absolute bottom-1 right-2 flex items-end gap-1 pointer-events-none opacity-90">
-            {/* Small Plant 1 */}
-            <div className="w-5 h-10 flex flex-col items-center">
-              <div className="w-1.5 h-6 bg-emerald-700 rounded-full origin-bottom rotate-12"></div>
-              <div className="w-1.5 h-5 bg-emerald-600 rounded-full origin-bottom -rotate-12 -mt-4"></div>
-              <div className="w-4 h-3 bg-amber-200 rounded-b-md rounded-t-xs"></div>
-            </div>
-            {/* Small Plant 2 */}
-            <div className="w-4 h-8 flex flex-col items-center">
-              <div className="w-1 h-5 bg-green-600 rounded-full"></div>
-              <div className="w-3 h-2.5 bg-amber-200 rounded-b-md rounded-t-xs"></div>
-            </div>
-          </div>
-        </div>
-
-      </section>
+      {/* Balanced Footer */}
+      <footer className="w-full py-4 text-center text-[10px] text-gray-300 z-10">
+        © 2026 EnviroScore Map Inc. All rights reserved.
+      </footer>
     </div>
   );
 }
