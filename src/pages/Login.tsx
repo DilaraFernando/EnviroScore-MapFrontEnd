@@ -9,29 +9,51 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Regular User');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
     if (!username || !password) {
       setError('Please enter both your username and password.');
       return;
     }
 
-    // RAD Prototype Mock Authentication
-    if (username === 'dilara' && password === 'password123') {
-      onLoginSuccess(username, role);
-    } else if (username === 'admin' && password === 'admin123') {
-      onLoginSuccess(username, 'Admin');
-    } else {
-      setError('Invalid username or password. Please try again.');
+    setIsLoading(true);
+
+    try {
+      // 🚀 Node.js Backend API එකට සම්බන්ධ වන ස්ථානය
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, role }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Backend එකෙන් සාර්ථක ප්‍රතිචාරයක් ලැබුණහොත් Dashboard එකට දත්ත යවයි
+        onLoginSuccess(data.username, data.role);
+      } else {
+        // Backend එකෙන් එන වැරදි (Invalid credentials) පෙන්වීම
+        setError(data.message || 'Invalid username or password. Please try again.');
+      }
+    } catch (err) {
+      // Backend සර්වර් එක ක්‍රියා විරහිත නම් ලැබෙන Error එක
+      setError('Server connection failed. Please check if your Node.js backend is running.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-6 relative select-none">
       
-      {/*LOGIN CARD */}
+      {/* BACKGROUND PATTERN */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#f1f5f9_2px,transparent_2px)] [background-size:32px_32px] opacity-100 pointer-events-none z-0"></div>
+
+      {/* LOGIN CARD */}
       <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.03)] max-w-sm w-full space-y-6 relative z-10">
         
         {/* Header Section */}
@@ -94,9 +116,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
           {/* Submit Button */}
           <button 
             type="submit" 
-            className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs hover:bg-gray-900 transition-all mt-6 cursor-pointer"
+            disabled={isLoading}
+            className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs hover:bg-gray-900 transition-all mt-6 cursor-pointer disabled:opacity-50"
           >
-            Sign In
+            {isLoading ? 'Connecting...' : 'Sign In'}
           </button>
         </form>
 

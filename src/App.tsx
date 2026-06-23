@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Home from "./pages/Home"; // 📂 ඔයාගේ folder structure එකට අනුව path එක නිවැරදි කළා
+import Login from "./pages/Login"; // 📂 Login.tsx තියෙන්නේ pages/score/ ඇතුළේ නම්
 import Dashboard from "./pages/score/Dashboard";
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <div>
-      {/*Home page */}
+      {/* 1. Home page */}
       {currentPage === "home" && (
         <Home 
           onStartQuiz={() => setCurrentPage("login")} 
@@ -27,16 +27,15 @@ export default function App() {
         />
       )}
 
-      {/* Login Page */}
+      {/* 2. Login Page */}
       {currentPage === "login" && (
         <Login onLoginSuccess={handleLoginSuccess} />
       )}
 
-      {/*Dashboard*/}
+      {/* 3. Dashboard (Props ටික Dashboard.tsx එකට ගැළපෙන සේ Connect කළා) */}
       {currentPage === "dashboard" && userSession && (
         <Dashboard 
-          username={userSession.username} 
-          role={userSession.role} 
+          user={userSession} // 🎯 userSession Object 
           onLogout={handleLogout} 
         />
       )}
