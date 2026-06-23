@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/score/Dashboard";
 
-// 🌟 මෙතන 'export default function App()' කියන කොටස හරියටම තියෙන්න ඕනේ
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'login' | 'dashboard'>("home");
   const [userSession, setUserSession] = useState<{ username: string; role: string } | null>(null);
@@ -20,7 +19,7 @@ export default function App() {
 
   return (
     <div>
-      {/* 1. ප්‍රධාන මුල් පිටුව (Main Home Page) */}
+      {/*Home page */}
       {currentPage === "home" && (
         <Home 
           onStartQuiz={() => setCurrentPage("login")} 
@@ -28,12 +27,12 @@ export default function App() {
         />
       )}
 
-      {/* 2. ලොගින් පිටුව (Login Page) */}
+      {/* Login Page */}
       {currentPage === "login" && (
         <Login onLoginSuccess={handleLoginSuccess} />
       )}
 
-      {/* 3. ප්‍රධාන ඩෑෂ්බෝඩ් පිටුව (Dashboard) */}
+      {/*Dashboard*/}
       {currentPage === "dashboard" && userSession && (
         <Dashboard 
           username={userSession.username} 
