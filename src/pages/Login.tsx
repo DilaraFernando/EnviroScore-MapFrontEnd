@@ -1,129 +1,197 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../lib/api";
 
+// ✅ Prop name matches what App.tsx passes: onLoginSuccess
 interface LoginProps {
-  onLoginSuccess: (username: string, role: string) => void;
+  onLoginSuccess: (userData: { username: string; role: string }) => void;
 }
 
 export default function Login({ onLoginSuccess }: LoginProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('Regular User');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // 
+  const navigate = useNavigate();
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [form, setForm] = useState({ username: "", email: "", password: "", role: "viewer" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    
-    if (!username || !password) {
-      setError('Please enter both your username and password.');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setError("");
+  };
+
+  const handleSubmit = async () => {
+    setError("");
+    if (!form.email || !form.password) {
+      setError("Email and password are required.");
+      return;
+    }
+    if (mode === "register" && !form.username) {
+      setError("Username is required.");
       return;
     }
 
-    setIsLoading(true);
-
+    setLoading(true);
     try {
-      // 🚀 Node.js Backend API එකට සම්බන්ධ වන ස්ථානය
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role }),
+      const endpoint = mode === "login" ? "/auth/login" : "/auth/register";
+      
+      // ✅ Payload updated: 'username' mapped to 'name' to match your backend model destructuring
+      const payload = mode === "login"
+        ? { email: form.email, password: form.password }
+        : { name: form.username, email: form.email, password: form.password, role: form.role };
+
+      const res = await api.post(endpoint, payload);
+      const { token, user } = res.data;
+
+      localStorage.setItem("token", token);
+      
+      // ✅ Updated to user.name to map back correctly from the server response payload
+      onLoginSuccess({ 
+        username: user.name || user.username || "", 
+        role: user.role 
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Backend එකෙන් සාර්ථක ප්‍රතිචාරයක් ලැබුණහොත් Dashboard එකට දත්ත යවයි
-        onLoginSuccess(data.username, data.role);
-      } else {
-        // Backend එකෙන් එන වැරදි (Invalid credentials) පෙන්වීම
-        setError(data.message || 'Invalid username or password. Please try again.');
-      }
-    } catch (err) {
-      // Backend සර්වර් එක ක්‍රියා විරහිත නම් ලැබෙන Error එක
-      setError('Server connection failed. Please check if your Node.js backend is running.');
+      
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Something went wrong. Try again.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6 relative select-none">
-      
-      {/* BACKGROUND PATTERN */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#f1f5f9_2px,transparent_2px)] [background-size:32px_32px] opacity-100 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-[#f5f5f7] font-sans flex flex-col items-center justify-center px-4">
 
-      {/* LOGIN CARD */}
-      <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.03)] max-w-sm w-full space-y-6 relative z-10">
-        
-        {/* Header Section */}
-        <div className="text-center space-y-2">
-          <div className="w-9 h-9 bg-black rounded-full flex items-center justify-center text-white text-sm shadow-xs mx-auto">
-            🗺️
-          </div>
-          <h2 className="text-xl font-black text-black tracking-tight mt-3">Welcome Back</h2>
-          <p className="text-xs text-gray-400">Sign in to your EnviroScore account</p>
+      {/* Logo */}
+      <div
+        className="flex items-center gap-2 mb-8 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-sm">🗺️</div>
+        <span className="font-black text-sm tracking-tight uppercase">EnviroScore-Map</span>
+      </div>
+
+      {/* Card */}
+      <div className="w-full max-w-sm bg-white border border-gray-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+
+        {/* Toggle */}
+        <div className="flex bg-gray-50 border border-gray-100 rounded-full p-1 mb-6">
+          {(["login", "register"] as const).map(m => (
+            <button
+              key={m}
+              onClick={() => { setMode(m); setError(""); }}
+              className={`flex-1 py-1.5 text-[11px] font-black rounded-full transition-all cursor-pointer ${
+                mode === m ? "bg-black text-white" : "text-gray-400 hover:text-black"
+              }`}
+            >
+              {m === "login" ? "Sign In" : "Register"}
+            </button>
+          ))}
         </div>
 
-        {/* Error Alert Box */}
+        <div className="mb-5">
+          <h1 className="text-xl font-black">
+            {mode === "login" ? "Welcome back" : "Create account"}
+          </h1>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            {mode === "login"
+              ? "Sign in to access the EnviroScore platform."
+              : "Register to start analysing Sri Lanka's ecosystems."}
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {mode === "register" && (
+            <div>
+              <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">Username</label>
+              <input
+                name="username"
+                type="text"
+                placeholder="e.g. dilara_fernandez"
+                value={form.username}
+                onChange={handleChange}
+                className="w-full bg-gray-50 border border-gray-200 focus:border-black rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-all"
+              />
+            </div>
+          )}
+
+          <div>
+            <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">Email</label>
+            <input
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
+              onKeyDown={e => e.key === "Enter" && handleSubmit()}
+              className="w-full bg-gray-50 border border-gray-200 focus:border-black rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">Password</label>
+            <input
+              name="password"
+              type="password"
+              placeholder="Min. 6 characters"
+              value={form.password}
+              onChange={handleChange}
+              onKeyDown={e => e.key === "Enter" && handleSubmit()}
+              className="w-full bg-gray-50 border border-gray-200 focus:border-black rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-all"
+            />
+          </div>
+
+          {mode === "register" && (
+            <div>
+              <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">Role</label>
+              <select
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                className="w-full bg-gray-50 border border-gray-200 focus:border-black rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-all cursor-pointer"
+              >
+                <option value="viewer">Viewer — Read-only access</option>
+                <option value="analyst">Analyst — Save analyses</option>
+                <option value="admin">Admin — Full access</option>
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Error */}
         {error && (
-          <div className="bg-gray-50 border border-gray-200 text-black text-[11px] p-3 rounded-xl font-semibold text-center animate-fade-in">
-            ⚠️ {error}
+          <div className="mt-4 bg-rose-50 border border-rose-100 rounded-xl px-3 py-2.5">
+            <p className="text-[11px] font-bold text-rose-600">{error}</p>
           </div>
         )}
 
-        {/* Modern Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* Username Input */}
-          <div>
-            <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider block">Username</label>
-            <input 
-              type="text" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="e.g., dilara"
-              className="mt-1.5 w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-xs text-black font-medium focus:outline-none focus:bg-white focus:border-black transition-all placeholder-gray-300"
-            />
-          </div>
+        {/* Submit */}
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full mt-5 py-3 bg-black hover:bg-gray-900 text-white text-xs font-black rounded-xl transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading
+            ? "Please wait..."
+            : mode === "login" ? "Sign In →" : "Create Account →"}
+        </button>
 
-          {/* Password Input */}
-          <div>
-            <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider block">Password</label>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="mt-1.5 w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-xs text-black font-medium focus:outline-none focus:bg-white focus:border-black transition-all placeholder-gray-300"
-            />
-          </div>
-
-          {/* Role Dropdown Selector */}
-          <div>
-            <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider block">System Role</label>
-            <select 
-              value={role} 
-              onChange={(e) => setRole(e.target.value)}
-              className="mt-1.5 w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-xs text-black font-semibold focus:outline-none focus:bg-white focus:border-black transition-all cursor-pointer appearance-none"
-            >
-              <option value="Regular User">Regular User</option>
-              <option value="Officer">Officer</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
-
-          {/* Submit Button */}
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs hover:bg-gray-900 transition-all mt-6 cursor-pointer disabled:opacity-50"
+        <p className="text-center text-[10px] text-gray-400 mt-4">
+          {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+          <button
+            onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
+            className="font-black text-black cursor-pointer hover:underline"
           >
-            {isLoading ? 'Connecting...' : 'Sign In'}
+            {mode === "login" ? "Register" : "Sign In"}
           </button>
-        </form>
-
+        </p>
       </div>
+
+      <button
+        onClick={() => navigate("/")}
+        className="mt-6 text-[10px] font-black text-gray-400 hover:text-black transition-all cursor-pointer"
+      >
+        ← Back to Home
+      </button>
     </div>
   );
 }
