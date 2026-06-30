@@ -218,27 +218,7 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
           </div>
         </div>
 
-        {/* BOTTOM ACTION ROW */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            onClick={() => navigate('/calculate')}
-            className="bg-black text-white rounded-2xl p-6 cursor-pointer hover:bg-gray-900 transition-all group"
-          >
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Eco Calculator</p>
-            <h3 className="text-lg font-black mt-1 mb-2">Simulate District<br />Environmental Score</h3>
-            <p className="text-xs text-gray-400 leading-relaxed">Adjust canopy cover, precipitation, and industrial impact to forecast ecosystem health.</p>
-            <div className="mt-4 text-[11px] font-black group-hover:translate-x-1 transition-transform">Open Calculator →</div>
-          </div>
-          <div
-            onClick={() => navigate('/map')}
-            className="bg-white border border-gray-100 rounded-2xl p-6 cursor-pointer hover:border-black transition-all group shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
-          >
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Interactive Map</p>
-            <h3 className="text-lg font-black mt-1 mb-2">Explore Destruction<br />Hotspots Visually</h3>
-            <p className="text-xs text-gray-400 leading-relaxed">Color-coded district markers: red danger zones, yellow caution, green safe areas across Sri Lanka.</p>
-            <div className="mt-4 text-[11px] font-black group-hover:translate-x-1 transition-transform">Open Map →</div>
-          </div>
-        </div>
+
 
       </main>
 

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-// ✅ No props required — navigation handled via useNavigate hook
+//  No props required — navigation handled via useNavigate hook
 export default function Home() {
   const navigate = useNavigate();
 

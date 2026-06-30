@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
 
-// ✅ Prop name matches what App.tsx passes: onLoginSuccess
+// Prop name matches what App.tsx passes: onLoginSuccess
 interface LoginProps {
   onLoginSuccess: (userData: { username: string; role: string }) => void;
 }
@@ -34,7 +34,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
     try {
       const endpoint = mode === "login" ? "/auth/login" : "/auth/register";
       
-      // ✅ Payload updated: 'username' mapped to 'name' to match your backend model destructuring
+      // Payload updated: 'username' mapped to 'name' to match your backend model destructuring
       const payload = mode === "login"
         ? { email: form.email, password: form.password }
         : { name: form.username, email: form.email, password: form.password, role: form.role };
@@ -44,7 +44,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
       localStorage.setItem("token", token);
       
-      // ✅ Updated to user.name to map back correctly from the server response payload
+      // Updated to user.name to map back correctly from the server response payload
       onLoginSuccess({ 
         username: user.name || user.username || "", 
         role: user.role 
