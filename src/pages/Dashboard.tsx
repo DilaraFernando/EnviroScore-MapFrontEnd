@@ -7,14 +7,14 @@ interface DashboardProps {
 }
 
 const DISTRICT_STATS = [
-  { name: "Colombo", score: 52, zone: "Yellow", trend: -2.1 },
-  { name: "Kalutara", score: 78, zone: "Green", trend: +1.4 },
-  { name: "Galle", score: 71, zone: "Green", trend: +0.8 },
-  { name: "Jaffna", score: 34, zone: "Red", trend: -3.5 },
-  { name: "Kandy", score: 67, zone: "Green", trend: +0.3 },
-  { name: "Anuradhapura", score: 39, zone: "Red", trend: -1.9 },
-  { name: "Gampaha", score: 55, zone: "Yellow", trend: -0.7 },
-  { name: "Nuwara Eliya", score: 82, zone: "Green", trend: +2.1 },
+  { name: "Colombo", score: 52, zone: "Yellow", trend: -2.1, temp: 29, condition: "Mostly Cloudy" },
+  { name: "Kalutara", score: 78, zone: "Green", trend: +1.4, temp: 28, condition: "Partly Cloudy" },
+  { name: "Galle", score: 71, zone: "Green", trend: +0.8, temp: 28, condition: "Light Rain" },
+  { name: "Jaffna", score: 34, zone: "Red", trend: -3.5, temp: 31, condition: "Sunny" },
+  { name: "Kandy", score: 67, zone: "Green", trend: +0.3, temp: 25, condition: "Cloudy" },
+  { name: "Anuradhapura", score: 39, zone: "Red", trend: -1.9, temp: 32, condition: "Sunny" },
+  { name: "Gampaha", score: 55, zone: "Yellow", trend: -0.7, temp: 29, condition: "Mostly Cloudy" },
+  { name: "Nuwara Eliya", score: 82, zone: "Green", trend: +2.1, temp: 18, condition: "Heavy Rain" },
 ];
 
 const ZONE_COLORS: Record<string, string> = {
@@ -75,11 +75,14 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
             <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center text-xs">🗺️</div>
             <span className="font-black text-xs tracking-tight uppercase">EnviroScore-Map</span>
           </div>
+          
+          {/* UPDATED NAVIGATION LINKS */}
           <nav className="hidden md:flex items-center bg-gray-50 border border-gray-100 rounded-full p-1 gap-0.5">
             {[
               { label: "Overview", path: "/dashboard" },
               { label: "Calculate Score", path: "/calculate" },
               { label: "Interactive Map", path: "/map" },
+              { label: "Weather Analytics", path: "/weather/colombo" }, // Single path configuration to weather page
             ].map(({ label, path }) => (
               <button
                 key={path}
@@ -92,6 +95,7 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
               </button>
             ))}
           </nav>
+          
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
               <p className="text-[11px] font-black leading-none">{user?.username || "Guest"}</p>

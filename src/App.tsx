@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "./pages/score/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import CalculateScore from "./pages/score/CalculateScore";
 import InteractiveMap from "./pages/Map/InteractiveMap";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import WeatherPage from "./pages/score/WeatherPage";
 
 interface User {
   username: string;
@@ -57,6 +58,8 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
+
+        <Route path="/weather/:districtName" element={<WeatherPage />} />
         <Route
           path="/calculate"
           element={user ? <CalculateScore /> : <Navigate to="/login" />}

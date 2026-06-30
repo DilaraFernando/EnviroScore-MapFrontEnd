@@ -106,7 +106,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               <input
                 name="username"
                 type="text"
-                placeholder="e.g. dilara_fernandez"
+                placeholder="Your name"
                 value={form.username}
                 onChange={handleChange}
                 className="w-full bg-gray-50 border border-gray-200 focus:border-black rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-all"
@@ -132,7 +132,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <input
               name="password"
               type="password"
-              placeholder="Min. 6 characters"
+              placeholder="******"
               value={form.password}
               onChange={handleChange}
               onKeyDown={e => e.key === "Enter" && handleSubmit()}
