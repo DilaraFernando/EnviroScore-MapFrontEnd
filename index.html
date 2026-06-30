@@ -4,11 +4,23 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ 
+    
+    <meta 
+      http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+           script-src 'self' 'unsafe-inline' blob: https://accounts.google.com/gsi/client; 
+           worker-src 'self' blob:;
+           style-src 'self' 'unsafe-inline'; 
+           img-src 'self' data: blob: https: https://enviro-score-map-back-end.vercel.app https://enviro-score-map-back-end.vercel.app 
+           frame-src 'self' https://accounts.google.com/;
+           connect-src 'self' https://enviro-score-map-back-end.vercel.app https://enviro-score-map-back-end.vercel.app http://127.0.0.1:5000 ws: https://accounts.google.com/;" />
+
 
     <title>EnviroScore Map - Eco-Impact Tracker</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
       rel="stylesheet"

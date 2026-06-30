@@ -19,6 +19,9 @@ const SRI_LANKA_DISTRICTS = [
   "Moneragala", "Ratnapura", "Kegalle"
 ].sort();
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'; 
+
+
 export default function WeatherPage() {
   const { districtName } = useParams<{ districtName: string }>();
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ export default function WeatherPage() {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/weather/analyze/${activeDistrict}`, {
+        const res = await axios.get(`${API_URL}/api/weather/analyze/${activeDistrict}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setData(res.data);
